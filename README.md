@@ -12,9 +12,10 @@ g++ client.cpp -pthread -o client
 
 ### Run -
 To run server -
-./server <port> 
+
+\n ./server <port> 
 example
-./server 8080
+\n ./server 8080
 
 To run client -
 ./client <clientid> <port>
