@@ -136,7 +136,7 @@ void *bind_thread(){
         perror("Listen() failed"); 
         exit(1);
     }
-    printf("\nListening on port :%d \n" , ID_PORT);
+    printf("\nListening on port- %d \n" , ID_PORT);
 
      while(1){
         clientPtr=(struct sockaddr *) &client_addr;
@@ -168,7 +168,7 @@ void *accept_thread(void *accept_sock){
         close(acpt_sock);
         exit(1);
     }
-    printf("Accept thread received: %s\n" , buffer);
+    printf("Message received- %s\n" , buffer);
     if(err = pthread_mutex_lock(&locker)){
         perror2("Failed to lock()",err);
     }
@@ -245,7 +245,9 @@ void broadcast(char *msg){ //msg 1
     FOR0(i, NODES_NO){
        if( NODE_ID != i){
             sprintf(buf,"ISREQ,%d,%d" , NODE_ID , req[NODE_ID]);
-            printf("\nNode: %d is going to send a msg to Node: %d \n" , NODE_ID , i);
+            // printf("\nNode- %d is sending a msg to Node- %d \n" , NODE_ID , i);
+            printf("\nNode- %d is sending a Request_To_Enter_CS_Message to Node- %d \n" , NODE_ID , i);
+            
             send(broad_sockets[i] , buf,sizeof(buf) , 0);
         }
     }
@@ -326,7 +328,9 @@ void sentToken(){
         sprintf(buf,"ISTOKEN,%d,%d,%s,%d" ,calQueueLen, NODES_NO , sendLast,NODE_ID );
     
     isReq = 0;
-    printf("\nNode: %d is gonna send a msg to Node: %d , the msg: %s\n" , NODE_ID , sendTokenTo , buf );
+    // printf("\nNode: %d is gonna send a msg to Node: %d , the msg: %s\n" , NODE_ID , sendTokenTo , buf );
+    printf("\nNode- %d is sending a Released_Token_Message to Node- %d , Message- %s\n" , NODE_ID , sendTokenTo , buf );
+    
     send(broad_sockets[NODE_ID] , buf,sizeof(buf) , 0);
     close(broad_sockets[NODE_ID]);
 
@@ -356,26 +360,34 @@ int calTotalReq(){
 
 
 
-void logExpirament(int totalReq , int loopsIn){
-    if(err=pthread_mutex_lock(&file_locker))
-        perror2("Failed to lock()",err);
+// void logExpirament(int totalReq , int loopsIn){
+//     if(err=pthread_mutex_lock(&file_locker))
+//         perror2("Failed to lock()",err);
 
-    FILE *fp;
-    char res[8];
-    bzero(res,sizeof(res));
-    sprintf(res,"%d\n" , (totalReq/loopsIn));
+//     FILE *fp;
+//     char res[8];
+//     bzero(res,sizeof(res));
+//     sprintf(res,"%d\n" , (totalReq/loopsIn));
 
-    fp=fopen("output.txt", "a+");
-    fprintf(fp , res , sizeof(res));
-    fclose(fp);
+//     fp=fopen("output.txt", "a+");
+//     fprintf(fp , res , sizeof(res));
+//     fclose(fp);
 
-    if(err = pthread_mutex_unlock(&file_locker))
-        perror2("Failed to lock()",err);
+//     if(err = pthread_mutex_unlock(&file_locker))
+//         perror2("Failed to lock()",err);
 
-    printf("Average value:%d\n" , (totalReq/loopsIn));
-}
+//     printf("Average value:%d\n" , (totalReq/loopsIn));
+// }
 
 int main(int agrc , char *argc[]){
+
+    printf("=========================================================================\n");
+    printf("Types Of Messages- \n");
+	printf("1. IsToken Message :Current node sends the token to next requesting node\n");
+	printf("2. IsReq Message :Current node sends request to enter in critical section\n");
+    printf("=========================================================================\n");
+
+
     ID_PORT=atoi(argc[2]);
 
     signal(SIGINT, signalHandler); 	// ctrl-c
@@ -386,10 +398,10 @@ int main(int agrc , char *argc[]){
 
     inisializations();
 
-    printf("----------------------------------------------------------\n");
-    printf("Started Node: %d on port: %d\n" , NODE_ID , ID_PORT);
-    printf("----------------------------------------------------------\n");
-    printf("\n");
+    // printf("----------------------------------------------------------\n");
+    printf("Started Node- %d on port- %d\n" , NODE_ID , ID_PORT);
+    // printf("----------------------------------------------------------\n");
+    // printf("\n");
 
     sleep(3);
     if(err=pthread_create(&tid[0] , NULL , &bind_thread , NULL)){
@@ -416,13 +428,13 @@ int main(int agrc , char *argc[]){
         totalReq += calTotalReq() - totalReqBefore ;
     }
 
-    printf("----------------------------------------------------\n");
-    printf("Node: %d is entering in critical section....\n" , NODE_ID);
+    printf("================================================\n");
+    printf("Node: %d is entering in critical section.\n" , NODE_ID);
       sleep(genNo(10));
 
     last[NODE_ID]= req[NODE_ID];
-    printf("Node: %d has exited the critical section....\n" , NODE_ID);
-    printf("----------------------------------------------------\n");
+    printf("Node: %d has exited the critical section.\n" , NODE_ID);
+    printf("================================================\n");
 
     while(!isReq);
 
@@ -431,7 +443,7 @@ int main(int agrc , char *argc[]){
     sleep(genNo(30));
     counter = counter - 1;
   }
-  logExpirament(totalReq,loop);
+  // logExpirament(totalReq,loop);
   printf("----------------------------------------------------\n");
   printf("Completed\n");
   printf("----------------------------------------------------\n");

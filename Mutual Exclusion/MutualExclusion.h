@@ -43,7 +43,7 @@ void *accept_thread(void *accept_sock);
 // Global variables
 
 //algo for nodes=3
-#define NODES_NO  3
+#define NODES_NO  4
 // max queue length
 #define MAX_QUEUE 100
 
