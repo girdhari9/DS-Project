@@ -9,26 +9,17 @@ g++ server.cpp -pthread -o server
 To compile client.cpp -
 g++ client.cpp -pthread -o client
 ### Run -
-<br />
-To run server -
-<br />
-./server <port> 
-<br />
-example
-<br /> 
-./server 8080
-
-To run client -
-<br />
-./client <clientid> <port>
-<br />
-example
- <br />
-./client 1 8080
-<br />
-./client 2 8080
-<br />
-./client 3 8080
+To run server -  
+./server <port>   
+example  
+./server 8080  
+ 
+To run client -  
+./client <clientid> <port>  
+example  
+./client 1 8080  
+./client 2 8080  
+./client 3 8080  
 
 ## PART 2 - MUTUAL EXCLUSION ALGORITHM IMPACT
 Types of msg -
