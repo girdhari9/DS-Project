@@ -1,7 +1,7 @@
 # DS-Project
 
 ## PART 1 - CAUSAL AND ARBITRARY SYSTEM
-Start all the clients on different terminals. TO broadcast a message simply go to that client terminal and type a message without spaces, then press enter key. That particualar messages will be delivered to all other clients.
+Start all the clients on different terminals. To broadcast a message simply go to that client terminal and type a message without spaces, then press enter key. That particualar messages will be delivered to all other clients.
 ### Compile -  
 #### To compile server.cpp: 
 ``` g++ server.cpp -pthread -o server ```
