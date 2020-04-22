@@ -1,0 +1,21 @@
+//TYpes of msg -
+// 1.  IsToken - a node has finished from critical section and send the token with the last queue
+// 2. IsReq - a node request to insert/enter in critical section
+
+Compile ->
+================
+gcc MutualExclusion.c -lm -lpthread -o MutualExclusion
+ (OR)
+make
+
+
+RUN->
+================
+//first starting node 0
+./MutualExclusion -p 2000
+
+//starting node 1
+./MutualExclusion -p 2001
+
+//first starting node 2
+./MutualExclusion -p 2002
