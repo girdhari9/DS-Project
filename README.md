@@ -23,9 +23,9 @@ example
 
 ## PART 2 - MUTUAL EXCLUSION ALGORITHM IMPACT
 #### Types of msg:
-1. IsToken - a node has finished from critical section and sends the token to next requesting node.   
-2. IsReq - a node requests to enter in critical section.  
-The nodes port numbers are given in config.txt file from which the program matches the it. After running all the nodes in different terminals, the program automatically generates random number for nodes request wait time and shows mutual exclusion.  
+1. **IsToken** - a node has finished from critical section and sends the token to next requesting node.   
+2. **IsReq** - a node requests to enter in critical section.  
+The nodes port numbers are given in ``` config.txt ``` file from which the program matches the it. After running all the nodes in different terminals, the program automatically generates random number for nodes request wait time and shows mutual exclusion.  
 
 ### Compile -
 ``` gcc MutualExclusion.c -lm -lpthread -o MutualExclusion  ```
