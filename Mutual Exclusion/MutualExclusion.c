@@ -168,7 +168,17 @@ void *accept_thread(void *accept_sock){
         close(acpt_sock);
         exit(1);
     }
-    printf("Message received: %s\n" , buffer);
+//     printf("Message received: %s\n" , buffer);
+    if(buffer[4]=='Q')
+    {
+       printf("Message received- < MsgType: [ISREQ], From NodeID: [%c], Request Count: [%c] >\n" , buffer[6],buffer[8]);
+
+    }
+    else
+    {
+       printf("Message received- < MsgType: [ISTOKEN], From NodeID: [%c], Token Count: [%c] >\n" , buffer[16],buffer[18]);
+    }
+	
     if(err = pthread_mutex_lock(&locker)){
         perror2("Failed to lock()",err);
     }
@@ -204,8 +214,10 @@ void *accept_thread(void *accept_sock){
     }
 
     else if(strcmp(msg.type , "ISTOKEN")==0){
-        printf("\nNode: %d received the token from: %d \n", NODE_ID, msg.NODEID);
-        hasToken = 1;
+	printf("-----------------------------------------\n");
+        printf("\nNode: %d received the token from Node: %d \n", NODE_ID, msg.NODEID);
+        printf("-----------------------------------------\n");
+	hasToken = 1;
     }
     close(acpt_sock);
 
@@ -245,8 +257,8 @@ void broadcast(char *msg){
     FOR0(i, NODES_NO){
        if( NODE_ID != i){
             sprintf(buf,"ISREQ,%d,%d" , NODE_ID , req[NODE_ID]);
-            printf("\nNode: %d is sending message to enter into CS to Node: %d \n" , NODE_ID , i);
-            
+//             printf("\nNode: %d is sending message to enter into CS to Node: %d \n" , NODE_ID , i);
+            printf("\nNode- %d is sending a Request_To_Enter_CS_Message to Node- %d \n" , NODE_ID , i);
             send(broad_sockets[i] , buf,sizeof(buf) , 0);
         }
     }
@@ -327,8 +339,10 @@ void sentToken(){
         sprintf(buf,"ISTOKEN,%d,%d,%s,%d" ,calQueueLen, NODES_NO , sendLast,NODE_ID );
     
     isReq = 0;
-    printf("\nNode: %d is sending a Released_Token_Message to Node: %d , Message: %s\n" , NODE_ID , sendTokenTo , buf );
-    
+//     printf("\nNode: %d is sending a Released_Token_Message to Node: %d , Message: %s\n" , NODE_ID , sendTokenTo , buf );
+    printf("\nNode: %d is sending a Released_Token_Message to Node: %d.\n" , NODE_ID , sendTokenTo);
+    printf("Message: <QueueLength: [%d], QueueData: [%s], TotalNodes: [%d], TokenCount Array: [%s], From NodeID: [%d]> \n\n" , calQueueLen,sendQueue,NODES_NO,sendLast,NODE_ID );
+  
     send(broad_sockets[NODE_ID] , buf,sizeof(buf) , 0);
     close(broad_sockets[NODE_ID]);
 
