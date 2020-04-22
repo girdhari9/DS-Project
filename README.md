@@ -33,11 +33,11 @@ gcc MutualExclusion.c -lm -lpthread -o MutualExclusion
 make  
 
 ### Run -
-//first starting node 0  
+###### Node 0  
 ./MutualExclusion -p 8080  
-//starting node 1  
+###### Node 1  
 ./MutualExclusion -p 8081  
-//starting node 2  
+###### Node 2  
 ./MutualExclusion -p 8082  
-//starting node 3  
+###### Node 3  
 ./MutualExclusion -p 8083  
