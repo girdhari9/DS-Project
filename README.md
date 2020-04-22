@@ -21,10 +21,15 @@ example
 ./server 8080
 
 To run client -
+<br />
 ./client <clientid> <port>
+<br />
 example
+ <br />
 ./client 1 8080
+<br />
 ./client 2 8080
+<br />
 ./client 3 8080
 
 ## PART 2 - MUTUAL EXCLUSION ALGORITHM IMPACT
