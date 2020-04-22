@@ -215,7 +215,7 @@ void *accept_thread(void *accept_sock){
 
     else if(strcmp(msg.type , "ISTOKEN")==0){
 	printf("-----------------------------------------\n");
-        printf("\nNode: %d received the token from Node: %d \n", NODE_ID, msg.NODEID);
+        printf("Node: %d received the token from Node: %d \n", NODE_ID, msg.NODEID);
         printf("-----------------------------------------\n");
 	hasToken = 1;
     }
