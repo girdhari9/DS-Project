@@ -41,7 +41,10 @@ void *accept_thread(void *accept_sock);
 #define perror2(s,e) fprintf(stderr, "%s:%s\n" , s, strerror(e))
 
 // Global variables
+
+//algo for nodes=3
 #define NODES_NO  3
+// max queue length
 #define MAX_QUEUE 100
 
 char Nodes_Ips[NODES_NO][100];        
@@ -55,12 +58,14 @@ int  req[NODES_NO], last[NODES_NO], queue[NODES_NO];
 struct sockaddr_in fd_nodes[NODES_NO]; 
 struct sockaddr *bindPtr , accept_node; 
 struct sockaddr *accept_nodePtr;
-int NODE_ID=-1;                         
-int ID_PORT;                            
+
+int NODE_ID=-1; //store node id                        
+int ID_PORT;  // store node port                          
 
 struct sockaddr_in serv_addr,client_addr;
 struct sockaddr *servPtr,*clientPtr ;
-int sock;
+
+int sock; //socket descriptor
 
 pthread_mutex_t locker;
 

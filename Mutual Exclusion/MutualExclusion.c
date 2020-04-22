@@ -4,13 +4,16 @@
 void decode(struct message *msg , char *string){
     msg->type=strdup(strtok(string, ","));
 
+    //Check the type of the message
     if((strcmp(msg->type , "ISTOKEN"))==0){
         int len = 0;
         msg->lenqueue = atoi(strtok(NULL, ","));
         len = msg->lenqueue;
+        
         if(len > 0)
             isReq = 1;
 
+        
         FOR0(i, len){
             int tempQueue=atoi(strtok(NULL, ","));
             msg->queue[i]= tempQueue ;
@@ -19,6 +22,8 @@ void decode(struct message *msg , char *string){
 
         msg->lenlast = atoi(strtok(NULL, ","));
         len = msg->lenlast;
+
+       
         FOR0(i, len){
             int tempLast= atoi(strtok(NULL, ","));
             msg->last[i] =tempLast;
@@ -43,20 +48,23 @@ void signalHandler(){
     exit(0);
 }
 
+//Function to read config file info
 void readConfigInfo(char *filename){
-    FILE  *config;   
+	FILE  *config;   //File descriptor 
     int MAX_NODES, port, i;   
     char node_name[100];                 
 
+    //Opens config file - store info about processes
     if(!(config = fopen("config.txt","r"))){
         perror("\nfopen config()");
         exit(-1);
     }
 
+    //Read number of processes
     fscanf(config, "%d", &MAX_NODES);
-
+    //Allocate two arrays one for the name of nodes and one for the ports
     Nodes_ports = (u_int16_t *) malloc(MAX_NODES * sizeof(int));
-
+    //Go through each line of the config file and retrieve ip address & port of each node.
     for(fscanf(config,"%s%d", node_name,&port), i = 0; !feof(config), i<MAX_NODES; fscanf(config,"%s%d", node_name,&port), i++){
         strcpy(Nodes_Ips[i] , node_name);
         Nodes_ports[i]=port;
@@ -64,6 +72,7 @@ void readConfigInfo(char *filename){
 
 }
 
+// Function to initialize sockets 
 void inisializations(){
     FOR0(i, NODES_NO){
         if(ID_PORT == Nodes_ports[i]){
@@ -90,11 +99,15 @@ void inisializations(){
     if(!NODE_ID)
         hasToken = 1;
 
+    //Initialization of mutexes
+    // for strtok in decode function
     pthread_mutex_init(&locker,NULL);
-
+    // for file lock
     pthread_mutex_init(&file_locker,NULL);
 }
 
+
+// Function to bind thread to a port and listening
 void *bind_thread(){
     pthread_t tid;
 
@@ -140,6 +153,8 @@ void *bind_thread(){
      }
 }
 
+
+// Function to accept connection from a specific node
 void *accept_thread(void *accept_sock){
     int acpt_sock;
     char buffer[256];
@@ -197,6 +212,7 @@ void *accept_thread(void *accept_sock){
     pthread_exit(0);
 }
 
+// function to generate random no for sleeping a node
 int genNo(int rand_NoIn){
     int randNo = 0;
     int MAX_N = rand_NoIn;
@@ -208,7 +224,8 @@ int genNo(int rand_NoIn){
     return randNo;
 }
 
-void broadcast(char *msg){
+// function to broadcast a message to all other node
+void broadcast(char *msg){ //msg 1
     char buf[256];
     bzero(buf,sizeof(buf));
     int msglen = 0;
@@ -238,6 +255,8 @@ void broadcast(char *msg){
             close(broad_sockets[i]);
     }
 }
+
+// function to send token to the requesting node
 void sentToken(){
     if(err=pthread_mutex_lock(&locker))
         perror2("Failed to lock()",err);
@@ -313,6 +332,8 @@ void sentToken(){
 
 }
 
+
+// function to check if a node is in queue
 int IsInQueue(int nodeIn){
     FOR0(i, NODES_NO){
       if( queue[i] == nodeIn)
@@ -321,6 +342,8 @@ int IsInQueue(int nodeIn){
     return 0;
 }
 
+
+// function to calculate total number of request for CS recieved
 int calTotalReq(){
     int total=0;
     FOR0(i, NODES_NO)
@@ -330,6 +353,8 @@ int calTotalReq(){
 
     return total;
 }
+
+
 
 void logExpirament(int totalReq , int loopsIn){
     if(err=pthread_mutex_lock(&file_locker))
