@@ -99,11 +99,11 @@ void *holdbackmg2(void *xx)
 						char pp=message[ppp];
 						if(pp=='\n')
 						{
-							cout<<"From process holdback_queue"<<processid_recv<<"-> "<<message;
+							cout<<"From process holdback_queue (received from process "<<processid_recv<<")-> "<<message;
 						}
 						else
 						{
-							cout<<"From process holdback_queue"<<processid_recv<<"-> "<<message<<endl;
+							cout<<"From process holdback_queue (received from process "<<processid_recv<<")-> "<<message<<endl;
 						}
 						pthread_mutex_lock(&mutex);
 						for(int j=0;j<3;j++)
