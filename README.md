@@ -11,15 +11,15 @@ Start all the clients on different terminals. To broadcast a message simply go t
 ### Run -
 #### To run server: 
 ``` ./server [port]  ``` 
-example  
+#### Example:  
 ``` ./server 8080  ```
  
 #### To run client:  
 ``` ./client [clientid] [port]  ```
-#### Example:  
-``` ./client 1 8080  ```
-``` ./client 2 8080  ```
-``` ./client 3 8080  ```
+#### Example:    
+``` ./client 1 8080  ```  
+``` ./client 2 8080  ```  
+``` ./client 3 8080  ```  
 
 ## PART 2 - MUTUAL EXCLUSION ALGORITHM IMPACT  
 We have used Suzuki-Kasami’s algorithm based on causal ordering (i.e Token Based Algorithm)  for implementing distributed Mutual Exclusion. Token-based algorithms are the one in which only one process holding a special message called the token, may enter the critical section.  
